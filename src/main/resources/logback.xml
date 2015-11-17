@@ -28,6 +28,55 @@
 		</layout>
 	</appender>
 	
+	
+	<appender name="PhenixWriteWarnFILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.base}.PhenixWriteWarn.%d{yyyy-MM-dd-HH}.log
+			</fileNamePattern>
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="PhenixWriteNormalFILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.base}.PhenixWriteNormal.%d{yyyy-MM-dd-HH}.log
+			</fileNamePattern>
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} %-4relative [%thread] %-3level %logger{26} %marker %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="PhenixWriteNormal" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>51200</queueSize>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印INFO日志 -->
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>NEUTRAL</onMismatch>
+		</filter>
+		<appender-ref ref="PhenixWriteNormalFILE" />
+	</appender>
+	<appender name="PhenixWriteWarn" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>51200</queueSize>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印WARN及以上日志 -->
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<appender-ref ref="PhenixWriteWarnFILE" />
+	</appender>
+	<logger name="logback.LogbackTest" level="INFO"
+		additivity="true">
+		<appender-ref ref="PhenixWriteNormal" />
+		<appender-ref ref="PhenixWriteWarn" />
+	</logger>
+	
 
 	<logger name="com.busap.admin" level="debug" additivity="false">
 		<appender-ref ref="logfile" />
