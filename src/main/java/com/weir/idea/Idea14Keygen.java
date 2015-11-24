@@ -1,4 +1,4 @@
-package src.main.java.com.weir.idea;
+package com.weir.idea;
 
 import java.math.BigInteger;
 import java.util.Date;
